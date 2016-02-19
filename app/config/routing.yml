@@ -7,10 +7,14 @@ fos_user:
 
 login:
     pattern:   /login
-    defaults:  { _controller: OCUserBundle:Security:login }
+    defaults:  { _controller: FOSUserBundle:Security:login }
 
 login_check:
     pattern:   /login_check
+    defaults:  { _controller: FOSUserBundle:Security:check }
 
 logout:
     pattern:   /logout
+
+register:
+    pattern:   /register
