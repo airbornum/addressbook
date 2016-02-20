@@ -16,15 +16,6 @@
             <form action="{{ path("user_edit", {'id': user.id}) }}">
                 <input type="submit" value="Edit" class="btn-default btn">
             </form>
-            <hr/>
-
-            <ul>
-                <li><b>Username : </b>{{ user.username }}</li>
-                <li><b>Password : </b><i>hidden</i></li>
-            </ul>
-            <form action="{{ path("user_edit_login", {'id': user.id}) }}">
-                <input type="submit" value="Edit" class="btn-default btn">
-            </form>
         </div>
     </div>
 {% endblock %}
