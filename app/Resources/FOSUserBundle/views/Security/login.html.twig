@@ -8,9 +8,9 @@
     <h1>Log in</h1>
     <a href="{{ path('register') }}">Not registered yet?</a>
     {% if error %}
-        <div>{{ error|trans }}</div>
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
-    <form action="{{ path("login_check") }}" method="post">
+    <form action="{{ path("fos_user_security_check") }}" method="post">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
         <div class="form-group">
