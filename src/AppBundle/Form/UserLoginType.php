@@ -22,8 +22,8 @@ class UserLoginType extends AbstractType
         ))
             ->add('plainPassword', 'repeated', array(
         'type' => 'password',
-        'first_options' => array('label' => 'form.new_password'),
-        'second_options' => array('label' => 'form.new_password_confirmation'),
+        'first_options' => array('label' => 'New password'),
+        'second_options' => array('label' => 'Confirm new password'),
         'invalid_message' => 'fos_user.password.mismatch',
     ));
         ;

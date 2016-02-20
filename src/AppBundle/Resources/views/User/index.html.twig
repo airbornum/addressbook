@@ -3,7 +3,6 @@
 {% block side %}
     <div class="col-md-3 ">
         <div class="about-div text-center">
-            <i class="fa fa-envelope-o fa-4x color-blue"></i>
             <h3>My profile</h3>
             <ul>
                 <li><b>First name : </b>{{ user.firstName }}</li>
@@ -13,18 +12,28 @@
                 <li><b>Address : </b>{{ user.address }}</li>
                 <li><b>Website : </b>{{ user.website }}</li>
             </ul>
-            <a href="{{ path("user_edit", {'id': user.id}) }}">Edit</a>
+
+            <form action="{{ path("user_edit", {'id': user.id}) }}">
+                <input type="submit" value="Edit" class="btn-default btn">
+            </form>
             <hr/>
 
             <ul>
                 <li><b>Username : </b>{{ user.username }}</li>
                 <li><b>Password : </b><i>hidden</i></li>
             </ul>
-            <a href="{{ path("user_edit_login", {'id': user.id}) }}">Edit</a>
+            <form action="{{ path("user_edit_login", {'id': user.id}) }}">
+                <input type="submit" value="Edit" class="btn-default btn">
+            </form>
         </div>
     </div>
 {% endblock %}
 {% block content -%}
+    <div id="logout">
+        <form action="{{ path("logout") }}">
+            <input type="submit" value="Logout" class="btn-danger btn">
+        </form>
+    </div>
     <h1>Address book</h1>
 
     {% if contacts.empty %}
@@ -57,7 +66,8 @@
     {% endif %}
 
     <hr/>
-    <a href="{{ path('contact_new') }}">
-        Ajouter un contact
-    </a>
+
+    <form action="{{ path('contact_new') }}">
+        <input type="submit" value="New contact" class="btn-primary btn">
+    </form>
 {% endblock %}

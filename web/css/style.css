@@ -144,7 +144,7 @@ min-height: 100px;
 background-color: rgba(209, 209, 209, 0.24);
 box-shadow: none;
 border: 0;
-padding: 50px 20px 30px 20px;
+padding: 20px 20px 20px 20px;
 margin-bottom:20px;
 }
 /*=======================================
@@ -213,4 +213,8 @@ tr td:hover { background: #666; color: #FFF; } /* Hover cell effect! */
 .required:after {
     color: #e32;
     content: "*";
+}
+
+#logout {
+    float:right;
 }
