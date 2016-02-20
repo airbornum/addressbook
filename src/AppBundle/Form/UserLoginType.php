@@ -5,26 +5,28 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
-class UserType extends AbstractType
+class UserLoginType extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName')
-            ->add('lastName')
-            ->add('email')
-            ->add('phoneNumber')
-            ->add('address')
-            ->add('website')
+            ->add('username')
+            ->add('current_password', 'password', array(
+            'label' => 'form.current_password',
+            'translation_domain' => 'FOSUserBundle',
+            'mapped' => false,
+            'constraints' => new UserPassword(),
+        ))
+            ->add('plainPassword', 'repeated', array(
+        'type' => 'password',
+        'first_options' => array('label' => 'form.new_password'),
+        'second_options' => array('label' => 'form.new_password_confirmation'),
+        'invalid_message' => 'fos_user.password.mismatch',
+    ));
         ;
-//            ->add('current_password', 'password', array(
-//            'label' => 'form.current_password',
-//            'translation_domain' => 'FOSUserBundle',
-//            'mapped' => false,
-//            'constraints' => new UserPassword(),
-//        ));
     }
     /**
      * @param OptionsResolverInterface $resolver
@@ -43,7 +45,7 @@ class UserType extends AbstractType
 
     public function getBlockPrefix()
     {
-        return 'app_user_profile';
+        return 'app_user_login';
     }
     // For Symfony 2.x
     public function getName()

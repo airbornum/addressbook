@@ -1,0 +1,15 @@
+services:
+    app.form.registration:
+        class: AppBundle\Form\UserType
+        tags:
+            - { name: form.type, alias: app_user_registration }
+
+    my.logger:
+        class:  Symfony\Bridge\Monolog\Logger
+        arguments: [app]
+        calls:
+            - [pushHandler, ["@my.logger_handler"]]
+
+    my.logger_handler:
+        class:  Monolog\Handler\StreamHandler
+        arguments: [%kernel.logs_dir%/%kernel.environment%.admin.log, 200]

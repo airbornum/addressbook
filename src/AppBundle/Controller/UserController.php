@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\User;
 use AppBundle\Form\UserType;
+use AppBundle\Form\UserLoginType;
 
 /**
  * User controller.
@@ -32,6 +33,7 @@ class UserController extends Controller
 
         return array(
             'contacts' => $contacts,
+            'user'        => $this->getUser()
         );
     }
     /**
@@ -58,6 +60,7 @@ class UserController extends Controller
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'user'        => $this->getUser()
         );
     }
 
@@ -95,6 +98,7 @@ class UserController extends Controller
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'user'        => $this->getUser()
         );
     }
 
@@ -120,6 +124,7 @@ class UserController extends Controller
         return array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
+            'user'        => $this->getUser()
         );
     }
 
@@ -141,12 +146,11 @@ class UserController extends Controller
         }
 
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
 
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'user'        => $this->getUser()
         );
     }
 
@@ -185,22 +189,99 @@ class UserController extends Controller
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('user_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('contacts', array('id' => $id)));
         }
 
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'user'        => $this->getUser()
         );
     }
+
+    /**
+     * Displays a form to edit credentials of an existing User entity.
+     *
+     * @Route("/{id}/login/edit", name="user_edit_login")
+     * @Method("GET")
+     * @Template()
+     */
+    public function editLoginAction(Request $request, $id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('AppBundle:User')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
+        $editForm = $this->createEditLoginForm($entity);
+
+        return array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+            'user'        => $this->getUser()
+        );
+    }
+
+    /**
+    * Creates a form to edit credentials of a User entity.
+    *
+    * @param User $entity The entity
+    *
+    * @return \Symfony\Component\Form\Form The form
+    */
+    private function createEditLoginForm(User $entity)
+    {
+        $form = $this->createForm(new UserLoginType(), $entity, array(
+            'action' => $this->generateUrl('user_update_login', array('id' => $entity->getId())),
+            'method' => 'PUT',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Update'));
+
+        return $form;
+    }
+
+    /**
+     * Edits credentials of an existing User entity.
+     *
+     * @Route("/{id}/login", name="user_update_login")
+     * @Method("PUT")
+     * @Template("AppBundle:User:editLogin.html.twig")
+     */
+    public function updateLoginAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('AppBundle:User')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
+        $editForm = $this->createEditLoginForm($entity);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isValid()) {
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('contacts', array('id' => $id)));
+        }
+
+        return array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+            'user'        => $this->getUser()
+        );
+    }
+
     /**
      * Deletes a User entity.
      *

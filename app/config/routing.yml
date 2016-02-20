@@ -7,7 +7,7 @@ fos_user:
 
 login:
     pattern:   /login
-    defaults:  { _controller: FOSUserBundle:Security:login }
+    defaults:  { _controller: AppBungle:Security:login }
 
 login_check:
     pattern:   /login_check
