@@ -1,0 +1,12 @@
+{% extends '::base.html.twig' %}
+
+{% block content -%}
+    <h1>Ajouter un contact</h1>
+
+    {{ form(form) }}
+
+    <hr/>
+    <a href="{{ path('contacts') }}">
+        Back to home page
+    </a>
+{% endblock %}

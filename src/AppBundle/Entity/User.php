@@ -180,5 +180,10 @@ class User extends BaseUser
         $this->website = $website;
     }
 
+    public function __toString()
+    {
+        return $this->getFirstName() . " " . $this->getLastName();
+    }
+
 
 }

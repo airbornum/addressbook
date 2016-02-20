@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\ContactType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -99,6 +100,73 @@ class UserController extends Controller
             'entity' => $entity,
             'form'   => $form->createView(),
             'user'        => $this->getUser()
+        );
+    }
+
+
+    /**
+     * Creates a new User entity.
+     *
+     * @Route("/contact", name="contact_create")
+     * @Method("POST")
+     * @Template("AppBundle:User:newContact.html.twig")
+     */
+    public function createContactAction(Request $request)
+    {
+        $form = $this->createContactCreateForm();
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $contact = $form->get('contact')->getData();
+            $this->getUser()->addContact($contact);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($this->getUser());
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('contacts'));
+        }
+
+        return array(
+            'form'   => $form->createView(),
+            'user'        => $this->getUser()
+        );
+    }
+
+    /**
+     * Creates a form to create a User entity.
+     *
+     * @param User $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createContactCreateForm()
+    {
+        $form = $this->createForm(new ContactType(), null, array(
+            'action' => $this->generateUrl('contact_create'),
+            'method' => 'POST',
+            'user' => $this->getUser()
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Add contact'));
+
+        return $form;
+    }
+
+    /**
+     * Displays a form to associate a new contact.
+     *
+     * @Route("/contact/new", name="contact_new")
+     * @Method("GET")
+     * @Template()
+     */
+    public function newContactAction()
+    {
+        $form   = $this->createContactCreateForm();
+
+        return array(
+            'form'   => $form->createView(),
+            'user'   => $this->getUser()
         );
     }
 
