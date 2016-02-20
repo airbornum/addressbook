@@ -218,3 +218,15 @@ tr td:hover { background: #666; color: #FFF; } /* Hover cell effect! */
 #logout {
     float:right;
 }
+
+li {
+    list-style-type: none;
+}
+
+ul {
+    padding-left: 0px;
+}
+
+h3 {
+    text-align:center;
+}

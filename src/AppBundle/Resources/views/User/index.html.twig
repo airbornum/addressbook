@@ -2,7 +2,7 @@
 
 {% block side %}
     <div class="col-md-3 ">
-        <div class="about-div text-center">
+        <div class="about-div">
             <h3>My profile</h3>
             <ul>
                 <li><b>First name : </b>{{ user.firstName }}</li>
@@ -45,9 +45,7 @@
                 <th>First name</th>
                 <th>Last name</th>
                 <th>Mail</th>
-                <th>Phone number</th>
-                <th>Address</th>
-                <th>Website</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -56,9 +54,11 @@
                     <td>{{ contact.firstName }}</td>
                     <td>{{ contact.lastName }}</td>
                     <td>{{ contact.email }}</td>
-                    <td>{{ contact.phoneNumber }}</td>
-                    <td>{{ contact.address }}</td>
-                    <td>{{ contact.website }}</td>
+                    <td>
+                        <form action="{{ path('user_show', {'id': contact.id}) }}">
+                            <input type="submit" value="Show" class="btn-info btn">
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

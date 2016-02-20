@@ -97,7 +97,16 @@ class User extends BaseUser
      * @param $contact
      */
     public function addContact($contact) {
-        $this->contacts[] = $contact;
+        $this->contacts->add($contact);
+    }
+
+    /**
+     * Remove a contact from the list of contacts
+     *
+     * @param $contact
+     */
+    public function removeContact($contact) {
+        $this->contacts->removeElement($contact);
     }
 
     /**
@@ -130,6 +139,10 @@ class User extends BaseUser
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
+    }
+
+    public function getFullName() {
+        return $this->getFirstName() . ' ' . $this->getLastName();
     }
 
     /**
@@ -182,7 +195,7 @@ class User extends BaseUser
 
     public function __toString()
     {
-        return $this->getFirstName() . " " . $this->getLastName();
+        return $this->getFirstName() . " " . $this->getLastName() . '(' . $this->getEmail() . ')';
     }
 
 

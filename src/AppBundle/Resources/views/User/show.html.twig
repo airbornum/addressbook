@@ -1,28 +1,23 @@
 {% extends '::base.html.twig' %}
 
-{% block body -%}
-    <h1>User</h1>
+{% block content -%}
+    <h1>Contact {{ contact.fullName }}</h1>
 
-    <table class="record_properties">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <ul>
+        <li><b>First name : </b>{{ contact.firstName }}</li>
+        <li><b>Last name : </b>{{ contact.lastName }}</li>
+        <li><b>Email : </b>{{ contact.email }}</li>
+        <li><b>Phone number : </b>{{ contact.phoneNumber }}</li>
+        <li><b>Address : </b>{{ contact.address }}</li>
+        <li><b>Website : </b>{{ contact.website }}</li>
+    </ul>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('user') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('user_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
+    {{ form_start(delete_form) }}
+    {{ form_widget(delete_form.submit, {'attr': {'class': 'btn-danger'}}) }}
+    {{ form_end(delete_form) }}
+    <hr/>
+    <a href="{{ path('contacts') }}">
+        Back to home page
+    </a>
 </ul>
 {% endblock %}

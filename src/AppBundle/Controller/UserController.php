@@ -181,16 +181,16 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('AppBundle:User')->find($id);
+        $contact = $em->getRepository('AppBundle:User')->find($id);
 
-        if (!$entity) {
+        if (!$contact) {
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteContactForm($id);
 
         return array(
-            'entity'      => $entity,
+            'contact'      => $contact,
             'delete_form' => $deleteForm->createView(),
             'user'        => $this->getUser()
         );
@@ -373,7 +373,7 @@ class UserController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('user'));
+        return $this->redirect($this->generateUrl('login'));
     }
 
     /**
@@ -390,6 +390,56 @@ class UserController extends Controller
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
-        ;
+            ;
+    }
+
+    /**
+     * Deletes a contact.
+     *
+     * @Route("/{id}/contact", name="contact_delete")
+     * @Method("GET")
+     */
+    public function deleteContactAction(Request $request, $id)
+    {
+        $form = $this->createDeleteContactForm($id);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $contact = $em->getRepository('AppBundle:User')->find($id);
+
+            $logger = $this->get('my.logger');
+            $logger->info("Deleting $id...");
+            if (!$contact) {
+                throw $this->createNotFoundException('Unable to find User entity.');
+            }
+
+            $logger->info("found");
+            $this->getUser()->removeContact($contact);
+            $logger->info("removed");
+
+            $em->persist($this->getUser());
+            $em->flush();
+            $logger->info("persisted");
+        }
+
+        return $this->redirect($this->generateUrl('contacts'));
+    }
+
+    /**
+     * Creates a form to delete a User entity by id.
+     *
+     * @param mixed $id The entity id
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteContactForm($id)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('contact_delete', array('id' => $id)))
+            ->setMethod('GET')
+            ->add('submit', 'submit', array('label' => 'Delete contact'))
+            ->getForm()
+            ;
     }
 }
